@@ -2,11 +2,24 @@ require('./bootstrap');
 import Vue from 'vue';
 import App from './App.vue';
 
-// window.Vue = Vue;
+import router from './router'
+import axios from 'axios'
+import VueAxios from 'vue-axios'
+axios.defaults.baseURL = 'http://dealok/api';
+axios.interceptors.request.use(function (config) {
+    const token = '123';
+    config.headers.Authorization =  'Bearer ' + token;
+
+    return config;
+});
+
+Vue.use(VueAxios, axios)
+
+window.Vue = Vue;
 Vue.config.productionTip = false
 
-// Vue.component('chat', './components/Chat');
 new Vue({
-    el: '#app',
-    render: h => h(App)
+    render: h => h(App),
+    router
 })
+.$mount('#app')

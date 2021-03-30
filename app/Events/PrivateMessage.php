@@ -24,7 +24,7 @@ class PrivateMessage implements ShouldBroadcastNow
 
 	public function __construct($message, ?User $user)
     {
-//		$this->dontBroadcastToCurrentUser();
+		$this->dontBroadcastToCurrentUser();
 		$this->message = $message;
 		$this->user = $user;
 	}

@@ -24,8 +24,6 @@ window.io = SocketClient;
 window.io.transport = 'websocket'
 
 
-// window.Pusher = require('pusher-js');
-//
 window.Echo = new Echo({
     broadcaster: 'socket.io',
     host: window.location.hostname + ':6001',

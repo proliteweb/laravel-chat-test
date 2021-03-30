@@ -1,16 +1,18 @@
 <template>
-  <div class="container">
-    <chat></chat>
+  <div id="app">
+    <header>
+      <router-link to="/deals">Deals</router-link>
+    </header>
+<!--    <router-link :to="/deal">Deals</router-link>-->
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
-import Chat from './components/Chat'
 
 export default {
   name: "App",
   components: {
-    'chat': Chat
   }
 }
 </script>

@@ -27,7 +27,6 @@ export default {
         .listen('.PrivateMessage', ({message, user}) => {
           this.messages.push(user.name + ': ' + message);
         })
-
   },
   methods: {
     sendMessage() {
