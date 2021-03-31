@@ -21,10 +21,9 @@ window.Vue = require('vue');
 import Echo from 'laravel-echo';
 
 window.io = SocketClient;
-window.io.transport = 'websocket'
 
 
 window.Echo = new Echo({
     broadcaster: 'socket.io',
-    host: window.location.hostname + ':6001',
+    host: 'http://localhost' + ':6001',
 });

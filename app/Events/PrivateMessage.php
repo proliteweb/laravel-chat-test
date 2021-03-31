@@ -41,6 +41,6 @@ class PrivateMessage implements ShouldBroadcastNow
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('chat.1');
+//        return new PrivateChannel('chat.1');
     }
 }

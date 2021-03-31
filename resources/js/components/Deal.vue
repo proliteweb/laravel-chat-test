@@ -19,14 +19,13 @@
             <div class="card-body">
               <div class="d-flex justify-content-around">
                 <img :src="deal.customer.profile.avatar" :width="50" class="img-fluid" alt="">
-                <p>{{ deal.customer.full_name }}</p>
+                <a :href="deal.customer.id">{{ deal.customer.full_name }}</a>
               </div>
             </div>
           </div>
         </div>
-
-
       </div>
+
       <div class="row">
         <div class="card mt-5 px-0 w-25" v-if="hasPerformer()">
           <div class="card-header">выбранный исполнитель</div>
@@ -38,17 +37,20 @@
           </div>
         </div>
       </div>
+
       <div class="row mt-5" >
         <h3>Ставки</h3>
-        <div class="card w-25 px-0" v-for="bet in getBets()">
+        <div class="card w-50 px-0" v-for="bet in getBets()">
           <div class="card-body">
             <div class="d-flex justify-content-around">
               <img :src="bet.performer.profile.avatar" :width="50" class="img-fluid" alt="">
-              <p>{{ bet.performer.full_name }}</p>
+              <a :href="bet.performer.id">{{ bet.performer.full_name }}</a>
+              <button class="btn btn-light" v-if="getPermission('can_init_chats')" @click="getChat(bet.performer.id)">Перейти в чат</button>
             </div>
           </div>
         </div>
       </div>
+
     </div>
   </div>
 </template>
@@ -65,7 +67,6 @@ export default {
   },
   mounted() {
     this.axios.get('/deals/' + this.id).then(({data}) => {
-      console.log(data)
       this.deal = data.data;
       this.bets = data.bids;
     })
@@ -89,6 +90,11 @@ export default {
     getPermission(permission){
       return this.deal.permissions[permission];
     },
+    getChat($performerId){
+      this.axios.get(`/deals/${this.deal.id}/performer/${$performerId}/chat`).then(({data}) => {
+        this.$router.push(`/chats/${data.data.id}`)
+      })
+    }
   }
 }
 </script>
