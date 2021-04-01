@@ -2041,11 +2041,30 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: 'chats',
   data: function data() {
     return {
-      chats: []
+      chats: null
     };
   },
   mounted: function mounted() {
@@ -2054,10 +2073,14 @@ __webpack_require__.r(__webpack_exports__);
     axios.get("/account/cabinet/chats").then(function (_ref) {
       var data = _ref.data;
       _this.chats = data.data;
-      console.log(_this.chats);
+      console.log(_this.chats[0]);
     });
   },
-  methods: {}
+  methods: {
+    openChat: function openChat(chatId) {
+      this.$router.push("/chats/".concat(chatId));
+    }
+  }
 });
 
 /***/ }),
@@ -32279,22 +32302,66 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "container" }, [
-      _c("div", { staticClass: "messages" }),
+  return _c("div", { staticClass: "container" }, [
+    _c("div", { staticClass: "messages" }),
+    _vm._v(" "),
+    _c("div", { staticClass: "row" }, [
+      _vm.chats
+        ? _c("div", { staticClass: "col-6" }, [
+            _c("div", { staticClass: "card" }, [
+              _c(
+                "div",
+                { staticClass: "card-body" },
+                _vm._l(_vm.chats, function(chat) {
+                  return _c(
+                    "div",
+                    {
+                      staticClass: "chat-item d-flex justify-content-between",
+                      staticStyle: { cursor: "pointer" },
+                      on: {
+                        click: function($event) {
+                          return _vm.openChat(chat.id)
+                        }
+                      }
+                    },
+                    [
+                      _c("div", { staticClass: "image" }, [
+                        _c("img", {
+                          attrs: {
+                            src: chat.user.profile.avatar,
+                            width: "50",
+                            alt: ""
+                          }
+                        })
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "profile ml-3" }, [
+                        _c("p", [_vm._v(_vm._s(chat.user.full_name))]),
+                        _vm._v(" "),
+                        _c("p", [_vm._v(_vm._s(chat.last_message.message))])
+                      ]),
+                      _vm._v(" "),
+                      _c("div", {}, [
+                        _c("p", [_vm._v(_vm._s(chat.last_message.created_at))]),
+                        _vm._v(" "),
+                        _c("p", { staticClass: "badge badge-info" }, [
+                          _vm._v(_vm._s(chat.unread_messages_count))
+                        ])
+                      ])
+                    ]
+                  )
+                }),
+                0
+              )
+            ])
+          ])
+        : _vm._e(),
       _vm._v(" "),
-      _c("div", { staticClass: "row" }, [
-        _c("div", { staticClass: "col-sm-12" })
-      ])
+      _c("div", { staticClass: "col-2 ml-4" }, [_vm._v("\n      types\n    ")])
     ])
-  }
-]
+  ])
+}
+var staticRenderFns = []
 render._withStripped = true
 
 
