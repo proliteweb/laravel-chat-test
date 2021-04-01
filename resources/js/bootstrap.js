@@ -26,4 +26,9 @@ window.io = SocketClient;
 window.Echo = new Echo({
     broadcaster: 'socket.io',
     host: 'http://localhost' + ':6001',
+    auth:        {
+        headers: {
+            Authorization: 'Bearer ' + '123',
+        },
+    },
 });

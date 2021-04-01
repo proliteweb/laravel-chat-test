@@ -5,8 +5,10 @@
     </div>
     <div class="row">
       <div class="col-sm-12 mt-4" v-for="deal in deals">
-<!--        <img src="{{ deal.customer.profile.avatar }}" alt="">-->
-       <router-link :to="`/deals/${deal.slug}`">{{ deal.title }}</router-link>
+        <router-link :to="`/deals/${deal.slug}`">
+          <img :src="deal.customer.profile.avatar" :width="80" alt="">
+          {{ deal.title }}
+        </router-link>
       </div>
     </div>
   </div>
