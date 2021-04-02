@@ -2000,10 +2000,14 @@ __webpack_require__.r(__webpack_exports__);
 
       _this.messages.push(message);
     });
+    this.axios.get("/account/cabinet/chats/".concat(this.id)).then(function (_ref2) {
+      var data = _ref2.data;
+      console.log(data);
+    });
   },
   methods: {
     sendMessage: function sendMessage() {
-      axios.post("/cabinet/chats/".concat(this.id), {
+      axios.post("/account/cabinet/chats/".concat(this.id), {
         body: this.textMessage
       });
       this.messages.push(this.textMessage);
@@ -2073,12 +2077,20 @@ __webpack_require__.r(__webpack_exports__);
     axios.get("/account/cabinet/chats").then(function (_ref) {
       var data = _ref.data;
       _this.chats = data.data;
-      console.log(_this.chats[0]);
     });
   },
   methods: {
     openChat: function openChat(chatId) {
       this.$router.push("/chats/".concat(chatId));
+    },
+    getLastMessageColumn: function getLastMessageColumn(chat, col) {
+      var _chat$last_message;
+
+      if ((_chat$last_message = !(chat !== null && chat !== void 0 && chat.last_message)) !== null && _chat$last_message !== void 0 ? _chat$last_message : false) {
+        return '';
+      }
+
+      return chat.last_message[col];
     }
   }
 });
@@ -32338,14 +32350,29 @@ var render = function() {
                       _c("div", { staticClass: "profile ml-3" }, [
                         _c("p", [_vm._v(_vm._s(chat.user.full_name))]),
                         _vm._v(" "),
-                        _c("p", [_vm._v(_vm._s(chat.last_message.message))])
+                        _c("p", [
+                          _vm._v(
+                            _vm._s(_vm.getLastMessageColumn(chat, "message"))
+                          )
+                        ])
                       ]),
                       _vm._v(" "),
                       _c("div", {}, [
-                        _c("p", [_vm._v(_vm._s(chat.last_message.created_at))]),
+                        _c("p", [
+                          _vm._v(
+                            _vm._s(_vm.getLastMessageColumn(chat, "created_at"))
+                          )
+                        ]),
                         _vm._v(" "),
                         _c("p", { staticClass: "badge badge-info" }, [
-                          _vm._v(_vm._s(chat.unread_messages_count))
+                          _vm._v(
+                            _vm._s(
+                              _vm.getLastMessageColumn(
+                                chat,
+                                "unread_messages_count"
+                              )
+                            )
+                          )
                         ])
                       ])
                     ]

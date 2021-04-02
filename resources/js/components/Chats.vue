@@ -12,14 +12,14 @@
               </div>
               <div class="profile ml-3">
                 <p>{{ chat.user.full_name }}</p>
-                <p>{{ chat.last_message.message }}</p>
+                <p>{{ getLastMessageColumn(chat, 'message') }}</p>
               </div>
               <div class="">
-                <p>{{ chat.last_message.created_at }}</p>
-                <p class="badge badge-info">{{ chat.unread_messages_count }}</p>
+                <p>{{ getLastMessageColumn(chat, 'created_at') }}</p>
+                <p class="badge badge-info">{{ getLastMessageColumn(chat, 'unread_messages_count') }}</p>
               </div>
+            </div>
           </div>
-        </div>
         </div>
       </div>
       <div class="col-2 ml-4">
@@ -41,13 +41,19 @@ export default {
   mounted() {
     axios.get(`/account/cabinet/chats`).then(({data}) => {
       this.chats = data.data;
-      console.log(this.chats[0])
     })
   },
   methods: {
-    openChat(chatId){
+    openChat(chatId) {
       this.$router.push(`/chats/${chatId}`)
+    },
+    getLastMessageColumn(chat, col) {
+      if (!chat?.last_message ?? false) {
+        return '';
+      }
+      return chat.last_message[col]
     }
-  }
+  },
+
 }
 </script>

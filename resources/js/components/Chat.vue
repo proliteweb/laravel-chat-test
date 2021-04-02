@@ -34,10 +34,13 @@ export default {
         .listen('MessageSubmitted', ({message}) => {
           this.messages.push(message);
         })
+    this.axios.get(`/account/cabinet/chats/${this.id}`).then(({data}) => {
+      console.log(data)
+    })
   },
   methods: {
     sendMessage() {
-      axios.post(`/cabinet/chats/${this.id}`, {body: this.textMessage});
+      axios.post(`/account/cabinet/chats/${this.id}`, {body: this.textMessage});
       this.messages.push(this.textMessage);
       this.textMessage = '';
     },
