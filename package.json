@@ -24,6 +24,7 @@
         "socket.io-client": "^2.4.0",
         "vue": "^2.6.12",
         "vue-axios": "^3.2.4",
+        "vue-chat-scroll": "^1.4.0",
         "vue-router": "^3.5.1"
     }
 }

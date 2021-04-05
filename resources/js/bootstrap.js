@@ -15,9 +15,8 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
  * for events that are broadcast by Laravel. Echo and event broadcasting
  * allows your team to easily build robust real-time web applications.
  */
-import SocketClient from 'socket.io-client';
 window.Vue = require('vue');
-
+import SocketClient from 'socket.io-client';
 import Echo from 'laravel-echo';
 
 window.io = SocketClient;

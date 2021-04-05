@@ -5,6 +5,7 @@ import App from './App.vue';
 import router from './router'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
+import VueChatScroll from 'vue-chat-scroll'
 axios.defaults.baseURL = 'http://dealok/api';
 axios.interceptors.request.use(function (config) {
     // const token = '1|Z2IY8r4InPuxsEpAspelLRERzwMkfA4JnRuuF1KA';
@@ -13,7 +14,7 @@ axios.interceptors.request.use(function (config) {
 
     return config;
 });
-
+Vue.use(VueChatScroll)
 Vue.use(VueAxios, axios)
 
 window.Vue = Vue;
