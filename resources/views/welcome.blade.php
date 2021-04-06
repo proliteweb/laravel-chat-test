@@ -28,5 +28,6 @@
         <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <script src="{{ mix('js/app.js') }}"></script>
 </div>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 </body>
 </html>

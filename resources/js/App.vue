@@ -13,6 +13,7 @@
     </header>
     <!--    <router-link :to="/deal">Deals</router-link>-->
     <router-view></router-view>
+    <notifications position="bottom right" />
   </div>
 </template>
 

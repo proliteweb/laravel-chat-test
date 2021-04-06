@@ -2,9 +2,9 @@
   <div class="container">
     <div class="messages">
     </div>
-    <div class="row">
+    <div class="row" v-if="chat">
       <div class="col-sm-8">
-        <div class="history card" v-if="chat" v-chat-scroll>
+        <div class="history card" v-chat-scroll>
           <div class="card-body">
             <div class="message card w-75 p-2 mb-1" v-for="message in messages"
                  :class="getMessageCssClasses(message)">
@@ -13,7 +13,6 @@
                 <p class="pl-3">{{ getUser(message.user_id).full_name }}</p>
               </div>
               {{ message.message }}
-              <span class="badge badge-info">{{ message.id }}</span>
               {{ setLastMessage(message) }}
             </div>
           </div>
@@ -21,17 +20,24 @@
         <input type="text" class="form-control mt-3" v-model="textMessage" @keyup.enter="sendMessage" placeholder="сообщение..." autofocus>
       </div>
       <div class="col-4 mt-4">
-        <div class="list-group">
+        <ul class="list-group">
           <li class="list-group-item" v-for="user in users">
             <img :src="user.profile.avatar" width="50" class="img-thumbnail" alt="">
             <span>{{ user.full_name }}</span>
           </li>
+        </ul>
+        <div class="card mt-4">
+          <div class="card-body">
+            <span class="toggleFavorite" @click="toggleFavorite">
+              <i class="fas fa-heart" v-if="chat.is_favorite"></i>
+              <i class="far fa-heart" v-else></i>
+            </span>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </template>
-
 
 <script>
 import lodash from 'lodash'
@@ -54,8 +60,7 @@ export default {
           this.pushMessage(res.message);
         })
         .listen('.MessagesWatched', (res) => {
-          // this.replaceMessages()
-          console.log(res)
+          this.replaceMessages(res.messages)
         })
     this.axios.get(`/account/cabinet/chats/${this.id}`)
         .then(({data}) => {
@@ -112,6 +117,12 @@ export default {
     },
     isOwnerMessage(userId) {
       return this.getUser(userId).is_current
+    }, toggleFavorite() {
+      this.axios.post(`/account/cabinet/chats/${this.id}/favorites`)
+          .then(({data}) => {
+            this.$notify(data.message);
+            this.chat.is_favorite = !this.chat.is_favorite;
+          })
     }
   }
 }
@@ -141,6 +152,11 @@ export default {
   right: 10px;
 
   opacity: 0.3;
+}
+
+.toggleFavorite {
+  cursor: pointer;
+  color: #687ac1;
 }
 
 </style>

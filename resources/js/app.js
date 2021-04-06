@@ -7,6 +7,7 @@ import axios from 'axios'
 import Vuex from 'vuex'
 import VueAxios from 'vue-axios'
 import VueChatScroll from 'vue-chat-scroll'
+import Notifications from 'vue-notification'
 import 'es6-promise/auto'
 
 axios.defaults.baseURL = 'http://dealok/api';
@@ -21,6 +22,7 @@ axios.interceptors.request.use(function (config) {
 Vue.use(Vuex)
 Vue.use(VueChatScroll)
 Vue.use(VueAxios, axios)
+Vue.use(Notifications)
 
 window.Vue = Vue;
 Vue.config.productionTip = false
