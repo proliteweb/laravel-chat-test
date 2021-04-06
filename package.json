@@ -10,6 +10,9 @@
         "production": "mix --production"
     },
     "devDependencies": {
+        "@babel/core": "^7.13.14",
+        "@babel/plugin-proposal-class-properties": "^7.13.0",
+        "@babel/register": "^7.13.14",
         "axios": "^0.21.1",
         "laravel-mix": "^6.0.6",
         "lodash": "^4.17.19",
@@ -20,11 +23,26 @@
         "vue-template-compiler": "^2.6.12"
     },
     "dependencies": {
+        "es6-promise": "^4.2.8",
         "laravel-echo": "^1.10.0",
         "socket.io-client": "^2.4.0",
         "vue": "^2.6.12",
         "vue-axios": "^3.2.4",
         "vue-chat-scroll": "^1.4.0",
-        "vue-router": "^3.5.1"
+        "vue-router": "^3.5.1",
+        "vuex": "^3.6.2"
+    },
+    "babel": {
+        "presets": [
+            "@babel/preset-env"
+        ],
+        "plugins": [
+            [
+                "@babel/plugin-proposal-class-properties",
+                {
+                    "loose": true
+                }
+            ]
+        ]
     }
 }
