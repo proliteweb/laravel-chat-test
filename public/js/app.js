@@ -2016,7 +2016,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 
 
 
@@ -2031,14 +2030,28 @@ __webpack_require__.r(__webpack_exports__);
       messages: [],
       users: [],
       id: this.$route.params['id'],
-      textMessage: ''
+      textMessage: '',
+      hasFiles: false,
+      activeUsers: []
     };
   },
   mounted: function mounted() {
     var _this = this;
 
-    console.log(this.$store.state.ChatUploadFiles.hasFiles);
-    window.Echo["private"]("chats.".concat(this.id)).listen('.MessageSubmitted', function (res) {
+    // this.hasFiles = this.$store.state.ChatUploadFiles.hasFiles;
+    // this.$store.state.ChatUploadFiles.commit('setHasFiles',true)
+    // console.log(this.hasFiles)
+    window.Echo.join("chats.".concat(this.id)).here(function (users) {
+      _this.activeUsers = users;
+    }).joining(function (user) {
+      _this.$notify("\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C ".concat(user.full_name, " \u043F\u0440\u0438\u0441\u043E\u0435\u0434\u0438\u043D\u0438\u043B\u0441\u044F \u043A \u0447\u0430\u0442\u0443"));
+
+      _this.activeUsers.push(user);
+    }).leaving(function (user) {
+      _this.$notify("\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C ".concat(user.full_name, " \u043F\u043E\u043A\u0438\u043D\u0443\u043B \u0447\u0430\u0442"));
+
+      _this.activeUsers.splice(_this.activeUsers.indexOf(user), 1);
+    }).listen('.MessageSubmitted', function (res) {
       _this.pushMessage(res.message);
     }).listen('.MessagesWatched', function (res) {
       console.log('MessagesWatched');
@@ -2190,6 +2203,9 @@ __webpack_require__.r(__webpack_exports__);
     axios.get("/account/cabinet/chats").then(function (_ref) {
       var data = _ref.data;
       _this.chats = data.data;
+    });
+    window.Echo["private"]("chats.user.2").listen('.MessageSubmitted', function (res) {
+      console.log(res);
     });
   },
   methods: {
@@ -2888,7 +2904,11 @@ var ChatUploadFiles = {
       hasFiles: false
     };
   },
-  mutations: {},
+  mutations: {
+    setHasFiles: function setHasFiles(state, flag) {
+      state.hasFiles = flag;
+    }
+  },
   actions: {},
   getters: {}
 };
@@ -5386,7 +5406,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, ".right[data-v-0d66c37a] {\n  margin-left: 25%;\n}\n.history[data-v-0d66c37a] {\n  overflow-y: auto;\n  height: 60vh;\n  background-color: aliceblue;\n}\n.message[data-v-0d66c37a] {\n  position: relative;\n}\n.message.unwatched[data-v-0d66c37a] {\n  background-color: #b5daf0;\n}\n.del-message[data-v-0d66c37a] {\n  cursor: pointer;\n  position: absolute;\n  top: 10px;\n  right: 10px;\n  opacity: 0.3;\n}\n.toggleFavorite[data-v-0d66c37a] {\n  cursor: pointer;\n  color: #687ac1;\n}\n.attach[data-v-0d66c37a] {\n  cursor: pointer;\n}", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, ".right[data-v-0d66c37a] {\n  margin-left: 25%;\n}\n.history[data-v-0d66c37a] {\n  overflow-y: auto;\n  height: 60vh;\n  background-color: aliceblue;\n}\n.message[data-v-0d66c37a] {\n  position: relative;\n}\n.message.unwatched[data-v-0d66c37a] {\n  background-color: #b5daf0;\n}\n.del-message[data-v-0d66c37a] {\n  cursor: pointer;\n  position: absolute;\n  top: 10px;\n  right: 10px;\n  opacity: 0.3;\n}\n.toggleFavorite[data-v-0d66c37a] {\n  cursor: pointer;\n  color: #687ac1;\n}\n.attach[data-v-0d66c37a] {\n  cursor: pointer;\n}\n.img-preview[data-v-0d66c37a] {\n  max-width: 150px;\n}", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -34102,10 +34122,9 @@ var render = function() {
                                 [
                                   message.message.is_image
                                     ? _c("img", {
-                                        staticClass: "img-fluid",
+                                        staticClass: "img-fluid img-preview",
                                         attrs: {
                                           src: message.message.file,
-                                          width: "150",
                                           alt: ""
                                         }
                                       })
@@ -34248,12 +34267,13 @@ var render = function() {
             _c("div", { staticClass: "card" }, [
               _c(
                 "div",
-                { staticClass: "card-body" },
+                { staticClass: "list-group" },
                 _vm._l(_vm.chats, function(chat) {
                   return _c(
                     "div",
                     {
-                      staticClass: "chat-item d-flex justify-content-between",
+                      staticClass:
+                        "list-group-item chat-item d-flex justify-content-between",
                       staticStyle: { cursor: "pointer" },
                       on: {
                         click: function($event) {
@@ -34264,6 +34284,7 @@ var render = function() {
                     [
                       _c("div", { staticClass: "image" }, [
                         _c("img", {
+                          staticClass: "img-thumbnail",
                           attrs: {
                             src: chat.user.profile.avatar,
                             width: "50",
@@ -34275,7 +34296,7 @@ var render = function() {
                       _c("div", { staticClass: "profile ml-3" }, [
                         _c("p", [_vm._v(_vm._s(chat.user.full_name))]),
                         _vm._v(" "),
-                        _c("p", [
+                        _c("span", [
                           _vm._v(
                             _vm._s(_vm.getLastMessageColumn(chat, "message"))
                           )

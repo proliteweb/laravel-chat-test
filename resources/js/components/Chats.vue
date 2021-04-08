@@ -5,14 +5,14 @@
     <div class="row">
       <div class="col-6" v-if="chats">
         <div class="card">
-          <div class="card-body">
-            <div class="chat-item d-flex justify-content-between" style="cursor: pointer" v-for="chat in chats" @click="openChat(chat.id)">
+          <div class="list-group">
+            <div class="list-group-item chat-item d-flex justify-content-between" style="cursor: pointer" v-for="chat in chats" @click="openChat(chat.id)">
               <div class="image">
-                <img :src="chat.user.profile.avatar" width="50" alt="">
+                <img class="img-thumbnail" :src="chat.user.profile.avatar" width="50" alt="">
               </div>
               <div class="profile ml-3">
                 <p>{{ chat.user.full_name }}</p>
-                <p>{{ getLastMessageColumn(chat, 'message') }}</p>
+                <span>{{ getLastMessageColumn(chat, 'message') }}</span>
               </div>
               <div class="">
                 <p>{{ getLastMessageColumn(chat, 'created_at') }}</p>
@@ -42,6 +42,10 @@ export default {
     axios.get(`/account/cabinet/chats`).then(({data}) => {
       this.chats = data.data;
     })
+    window.Echo.private(`chats.user.2`)
+        .listen('.MessageSubmitted', (res) => {
+          console.log(res)
+        })
   },
   methods: {
     openChat(chatId) {

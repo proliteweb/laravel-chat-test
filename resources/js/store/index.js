@@ -6,7 +6,11 @@ const ChatUploadFiles = {
     state: () => ({
         hasFiles: false
     }),
-    mutations: {},
+    mutations: {
+        setHasFiles(state, flag) {
+            state.hasFiles = flag
+        }
+    },
     actions: {},
     getters: {}
 }

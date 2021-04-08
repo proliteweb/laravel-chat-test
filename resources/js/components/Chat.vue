@@ -14,7 +14,7 @@
               </div>
               <p class="message-file" v-if="isMessageTypeFile(message)">
                 <a :href="message.message.file" target="_blank">
-                  <img :src="message.message.file" class="img-fluid" width="150" alt="" v-if="message.message.is_image">
+                  <img :src="message.message.file" class="img-fluid img-preview" alt="" v-if="message.message.is_image">
                   <span v-else>{{ message.message.original_name }}</span>
                 </a>
               </p>
@@ -47,7 +47,6 @@
     </div>
   </div>
 </template>
-
 <script>
 import lodash from 'lodash'
 import UploadFiles from "./UploadFiles";
@@ -57,6 +56,7 @@ export default {
   components: {
     UploadFiles
   },
+
   data() {
     return {
       chat: null,
@@ -64,11 +64,28 @@ export default {
       users: [],
       id: this.$route.params['id'],
       textMessage: '',
+      hasFiles:false,
+      activeUsers: []
     }
   },
   mounted() {
-    console.log(this.$store.state.ChatUploadFiles.hasFiles)
-    window.Echo.private(`chats.${this.id}`)
+    // this.hasFiles = this.$store.state.ChatUploadFiles.hasFiles;
+    // this.$store.state.ChatUploadFiles.commit('setHasFiles',true)
+
+    // console.log(this.hasFiles)
+
+    window.Echo.join(`chats.${this.id}`)
+        .here((users) => {
+          this.activeUsers = users;
+        })
+        .joining((user) => {
+          this.$notify(`Пользователь ${user.full_name} присоединился к чату`)
+          this.activeUsers.push(user)
+        })
+        .leaving((user) => {
+          this.$notify(`Пользователь ${user.full_name} покинул чат`)
+          this.activeUsers.splice(this.activeUsers.indexOf(user), 1)
+        })
         .listen('.MessageSubmitted', (res) => {
           this.pushMessage(res.message);
         })
@@ -82,6 +99,7 @@ export default {
           this.messages = this.reverseMessagesOrder(this.chat.messages.data);
           this.users = this.usersKeyBy(data.users);
         })
+
   },
   methods: {
     reverseMessagesOrder(messages = []) {
@@ -179,6 +197,9 @@ export default {
 }
 .attach{
   cursor: pointer;
+}
+.img-preview{
+  max-width:150px;
 }
 
 </style>
