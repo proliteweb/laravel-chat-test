@@ -14,9 +14,16 @@ const ChatUploadFiles = {
     actions: {},
     getters: {}
 }
+const user = {
+    state: () => ({}),
+    mutations: {},
+    actions: {},
+    getters: {}
+}
 
 export default new Vuex.Store({
     modules: {
-        ChatUploadFiles
+        ChatUploadFiles,
+        user
     }
 });

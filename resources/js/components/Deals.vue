@@ -28,6 +28,10 @@ export default {
     this.axios.get('/deals').then((response) => {
       this.deals = response.data.data;
     })
+    window.Echo.channel('deals.new')
+        .listen('.OrderCreated', (res) => {
+          this.deals.unshift(res.deal)
+        })
   },
 
   methods: {}

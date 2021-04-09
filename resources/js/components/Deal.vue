@@ -38,7 +38,7 @@
         </div>
       </div>
 
-      <div class="row mt-5" >
+      <div class="row mt-5">
         <h3>Ставки</h3>
         <div class="card w-50 px-0" v-for="bet in getBets()">
           <div class="card-body">
@@ -66,31 +66,37 @@ export default {
     }
   },
   mounted() {
+
+
     this.axios.get('/deals/' + this.id).then(({data}) => {
       this.deal = data.data;
       this.bets = data.bids;
+      window.Echo.private(`deals.${this.deal.id}.new-bid`)
+          .listen('.BidCreated', ({bid}) => {
+            this.bets.push(bid);
+          })
     })
   },
   methods: {
-    getCategoryName(){
+    getCategoryName() {
       return this.deal.category.name ?? null
     },
-    getCityName(){
+    getCityName() {
       return this.deal.city.name
     },
-    getPerformer(){
+    getPerformer() {
       return this.deal.performer;
     },
-    hasPerformer(){
+    hasPerformer() {
       return null !== this.getPerformer();
     },
-    getBets(){
+    getBets() {
       return this.bets;
     },
-    getPermission(permission){
+    getPermission(permission) {
       return this.deal.permissions[permission];
     },
-    getChat($performerId){
+    getChat($performerId) {
       this.axios.get(`/deals/${this.deal.id}/performer/${$performerId}/chat`).then(({data}) => {
         this.$router.push(`/chats/${data.data.id}`)
       })
@@ -100,7 +106,7 @@ export default {
 </script>
 
 <style scoped>
-  .not_selected{
-    opacity: .6;
-  }
+.not_selected {
+  opacity: .6;
+}
 </style>

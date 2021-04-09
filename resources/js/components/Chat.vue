@@ -12,13 +12,7 @@
                 <img class="img-thumbnail" :src="getUser(message.user_id).profile.avatar" :width="40" alt="">
                 <p class="pl-3">{{ getUser(message.user_id).full_name }}</p>
               </div>
-              <p class="message-file" v-if="isMessageTypeFile(message)">
-                <a :href="message.message.file" target="_blank">
-                  <img :src="message.message.file" class="img-fluid img-preview" alt="" v-if="message.message.is_image">
-                  <span v-else>{{ message.message.original_name }}</span>
-                </a>
-              </p>
-              <p class="message-text" v-else>{{ message.message }}</p>
+              <chat-message :message="message"></chat-message>
               {{ setLastMessage(message) }}
             </div>
           </div>
@@ -51,10 +45,12 @@
 import lodash from 'lodash'
 import UploadFiles from "./UploadFiles";
 import {ChatMessagesOrder} from '../class/ChatMessagesOrder'
+import chatMessage from './ChatMessage'
 export default {
   name: 'chat',
   components: {
-    UploadFiles
+    UploadFiles,
+    chatMessage
   },
 
   data() {
@@ -73,17 +69,18 @@ export default {
     // this.$store.state.ChatUploadFiles.commit('setHasFiles',true)
 
     // console.log(this.hasFiles)
+    const $this = this;
 
     window.Echo.join(`chats.${this.id}`)
         .here((users) => {
           this.activeUsers = users;
         })
         .joining((user) => {
-          this.$notify(`Пользователь ${user.full_name} присоединился к чату`)
+          this.$notify(`Пользователь ${this.getUser(user).full_name} присоединился к чату`)
           this.activeUsers.push(user)
         })
         .leaving((user) => {
-          this.$notify(`Пользователь ${user.full_name} покинул чат`)
+          this.$notify(`Пользователь ${this.getUser(user).full_name} покинул чат`)
           this.activeUsers.splice(this.activeUsers.indexOf(user), 1)
         })
         .listen('.MessageSubmitted', (res) => {
@@ -159,7 +156,7 @@ export default {
             this.$notify(data.message);
             this.chat.is_favorite = !this.chat.is_favorite;
           })
-    }
+    },
   }
 }
 </script>
