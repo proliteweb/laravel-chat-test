@@ -46,7 +46,6 @@ export default {
   mounted() {
     this.axios.get('/account/cabinet/deals/completed').then((response) => {
       this.completed = response.data.data;
-      console.log(this.completed)
     })
     this.axios.get('/account/cabinet/deals/active').then((response) => {
       this.active = response.data.data;

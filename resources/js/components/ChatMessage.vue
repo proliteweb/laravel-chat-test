@@ -7,6 +7,7 @@
       </a>
     </p>
     <p class="message-text" v-else>{{ message.message }}</p>
+    <span class="badge">{{ message.id }}</span>
   </div>
 </template>
 <script>

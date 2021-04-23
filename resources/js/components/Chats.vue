@@ -49,7 +49,7 @@ export default {
   },
   mounted() {
     this.getLIstData();
-    const room = `chats.user.2`;
+    const room = `chats.user.1`;
     if (!ChatRoomsInitialized.hasSubscribedRoom(room)) {
       ChatRoomsInitialized.addSubscribedRoom(room)
       window.Echo.private(room)

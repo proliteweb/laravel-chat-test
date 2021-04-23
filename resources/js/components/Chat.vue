@@ -19,7 +19,8 @@
         </div>
         <div class="d-flex">
           <upload-files></upload-files>
-          <input type="text" class="form-control mt-3" v-model="textMessage" @keyup.enter="sendMessage" placeholder="сообщение..." autofocus>
+          <input type="text" class="form-control mt-3" v-model="textMessage" @keyup.enter="sendMessage" placeholder="сообщение..."
+                 autofocus>
         </div>
       </div>
       <div class="col-4 mt-4">
@@ -46,6 +47,7 @@ import lodash from 'lodash'
 import UploadFiles from "./UploadFiles";
 import {ChatMessagesOrder} from '../class/ChatMessagesOrder'
 import chatMessage from './ChatMessage'
+
 export default {
   name: 'chat',
   components: {
@@ -60,16 +62,13 @@ export default {
       users: [],
       id: this.$route.params['id'],
       textMessage: '',
-      hasFiles:false,
+      hasFiles: false,
       activeUsers: []
     }
   },
   mounted() {
     // this.hasFiles = this.$store.state.ChatUploadFiles.hasFiles;
     // this.$store.state.ChatUploadFiles.commit('setHasFiles',true)
-
-    // console.log(this.hasFiles)
-    const $this = this;
 
     window.Echo.join(`chats.${this.id}`)
         .here((users) => {
@@ -83,20 +82,19 @@ export default {
           this.$notify(`Пользователь ${this.getUser(user).full_name} покинул чат`)
           this.activeUsers.splice(this.activeUsers.indexOf(user), 1)
         })
-        .listen('.MessageSubmitted', (res) => {
-          this.pushMessage(res.message);
-        })
-        .listen('.MessagesWatched', (res) => {
-          console.log('MessagesWatched')
-          this.replaceMessages(res.messages)
-        })
+        .listen('.MessageSubmitted', ({message}) => {
+          this.pushMessage(message);
+        });
+    window.Echo.private(`chats.${this.id}`)
+        .listen('.MessagesWatched', ({messages}) => {
+          this.replaceMessages(messages)
+        });
     this.axios.get(`/account/cabinet/chats/${this.id}`)
         .then(({data}) => {
           this.chat = data.data;
           this.messages = this.reverseMessagesOrder(this.chat.messages.data);
           this.users = this.usersKeyBy(data.users);
         })
-
   },
   methods: {
     reverseMessagesOrder(messages = []) {
@@ -142,7 +140,7 @@ export default {
       }
       return classes;
     },
-    isMessageTypeFile(message){
+    isMessageTypeFile(message) {
       return message.type === 'file';
     },
     getUser(id) {
@@ -192,11 +190,13 @@ export default {
   cursor: pointer;
   color: #687ac1;
 }
-.attach{
+
+.attach {
   cursor: pointer;
 }
-.img-preview{
-  max-width:150px;
+
+.img-preview {
+  max-width: 150px;
 }
 
 </style>

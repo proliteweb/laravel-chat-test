@@ -18,16 +18,38 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 window.Vue = require('vue');
 import SocketClient from 'socket.io-client';
 import Echo from 'laravel-echo';
+import Vue from "vue";
+import VueAxios from "vue-axios";
+import axios from 'axios'
 
 window.io = SocketClient;
+// const host = 'api.dealok.comnd-x.com'
+const host = 'dealok'
 
+axios.defaults.baseURL = 'http://' + host + '/api';
+Vue.use(VueAxios, axios)
+if (!localStorage.getItem('authToken')) {
+    const login = prompt('email', 'performer@qq.com')
+    const password = 'qweqweqwe';
+    axios.post('login', {
+        login, password
+    }).then(({data}) => {
+        localStorage.setItem('authToken', data.token);
+    })
+}
+window.authToken = localStorage.getItem('authToken')
+
+axios.interceptors.request.use(function (config) {
+    config.headers.Authorization = 'Bearer ' + window.authToken;
+    return config;
+});
 
 window.Echo = new Echo({
     broadcaster: 'socket.io',
-    host: 'http://localhost' + ':6001',
-    auth:        {
+    host: 'http://' + host + ':6001',
+    auth: {
         headers: {
-            Authorization: 'Bearer ' + '123',
+            Authorization: 'Bearer ' + window.authToken,
         },
     },
 });

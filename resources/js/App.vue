@@ -8,9 +8,9 @@
       </div>
       <div class="col-3 offset-3">
         <user-info></user-info>
-
       </div>
     </header>
+    <user-notifications></user-notifications>
     <!--    <router-link :to="/deal">Deals</router-link>-->
     <router-view></router-view>
     <notifications position="bottom right" />
@@ -19,11 +19,19 @@
 
 <script>
 import UserInfo from './components/UserInfo'
+import UserNotifications from './components/UserNotifications'
 
 export default {
   name: "App",
   components: {
-    "user-info": UserInfo
-  }
+    "user-info": UserInfo,
+    "user-notifications": UserNotifications,
+  }, data() {
+    return {
+      user: null
+    }
+  },
+
+
 }
 </script>

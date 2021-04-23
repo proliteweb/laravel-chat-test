@@ -45,6 +45,7 @@
             <div class="d-flex justify-content-around">
               <img :src="bet.performer.profile.avatar" :width="50" class="img-fluid" alt="">
               <a :href="bet.performer.id">{{ bet.performer.full_name }}</a>
+              <span>{{ bet.bid_with_currency }}</span>
               <button class="btn btn-light" v-if="getPermission('can_init_chats')" @click="getChat(bet.performer.id)">Перейти в чат</button>
             </div>
           </div>
@@ -66,8 +67,6 @@ export default {
     }
   },
   mounted() {
-
-
     this.axios.get('/deals/' + this.id).then(({data}) => {
       this.deal = data.data;
       this.bets = data.bids;
