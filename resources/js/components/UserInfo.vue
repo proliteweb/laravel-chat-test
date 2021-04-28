@@ -5,6 +5,9 @@
         <img :src="user.profile.avatar" :width="50" alt="">
         <a :href="user.id">{{ user.full_name }}</a>
         <a class="badge badge-info" href="#" @click="toggleUserType">{{ user.type === 'performer' ? 'Исполнитель' : 'Заказчик' }}</a>
+          <div class="links pt-3">
+              <router-link :to="`/cabinet/notifications/config`">Настройка уведомлений</router-link>
+          </div>
       </div>
     </div>
   </div>

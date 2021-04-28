@@ -14,10 +14,10 @@ export default {
 
   mounted() {
     const userId = 1;
-    Echo.private('App.Models.User.' + userId)
-        .notification((notification) => {
-          console.log(notification);
-        });
+      Echo.private('users.notifications.' + userId)
+          .notification((notification) => {
+              console.log(notification);
+          });
 
     // this.loadNotifications()
   },
