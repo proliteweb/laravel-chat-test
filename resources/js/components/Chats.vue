@@ -47,12 +47,16 @@ export default {
       chats: null,
     }
   },
+  beforeRouteLeave(to, from, next) {
+    window.Echo.leave(`chats.user.1`)
+    next()
+  },
   mounted() {
     this.getLIstData();
     const room = `chats.user.1`;
     if (!ChatRoomsInitialized.hasSubscribedRoom(room)) {
       ChatRoomsInitialized.addSubscribedRoom(room)
-      window.Echo.private(room)
+      window.Echo.join(room)
           .listen('.MessageSubmitted', ({message}) => {
             this.replaceLastMessage(message)
           })

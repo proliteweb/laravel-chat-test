@@ -14,8 +14,9 @@ export default {
 
   mounted() {
     const userId = 1;
-    Echo.private('App.Models.User.' + userId)
+    Echo.private('users.notifications.' + userId)
         .notification((notification) => {
+          this.$notify(notification.title + '\n' + notification.message)
           console.log(notification);
         });
 

@@ -66,10 +66,11 @@ export default {
       activeUsers: []
     }
   },
+  beforeRouteLeave(to, from, next) {
+    window.Echo.leave(`chats.${this.id}`)
+    next()
+  },
   mounted() {
-    // this.hasFiles = this.$store.state.ChatUploadFiles.hasFiles;
-    // this.$store.state.ChatUploadFiles.commit('setHasFiles',true)
-
     window.Echo.join(`chats.${this.id}`)
         .here((users) => {
           this.activeUsers = users;

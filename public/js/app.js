@@ -2041,11 +2041,13 @@ __webpack_require__.r(__webpack_exports__);
       activeUsers: []
     };
   },
+  beforeRouteLeave: function beforeRouteLeave(to, from, next) {
+    window.Echo.leave("chats.".concat(this.id));
+    next();
+  },
   mounted: function mounted() {
     var _this = this;
 
-    // this.hasFiles = this.$store.state.ChatUploadFiles.hasFiles;
-    // this.$store.state.ChatUploadFiles.commit('setHasFiles',true)
     window.Echo.join("chats.".concat(this.id)).here(function (users) {
       _this.activeUsers = users;
     }).joining(function (user) {
@@ -2255,6 +2257,10 @@ __webpack_require__.r(__webpack_exports__);
       chats: null
     };
   },
+  beforeRouteLeave: function beforeRouteLeave(to, from, next) {
+    window.Echo.leave("chats.user.1");
+    next();
+  },
   mounted: function mounted() {
     var _this = this;
 
@@ -2263,7 +2269,7 @@ __webpack_require__.r(__webpack_exports__);
 
     if (!_class_ChatRoomsInitialized__WEBPACK_IMPORTED_MODULE_1__.default.hasSubscribedRoom(room)) {
       _class_ChatRoomsInitialized__WEBPACK_IMPORTED_MODULE_1__.default.addSubscribedRoom(room);
-      window.Echo["private"](room).listen('.MessageSubmitted', function (_ref) {
+      window.Echo.join(room).listen('.MessageSubmitted', function (_ref) {
         var message = _ref.message;
 
         _this.replaceLastMessage(message);
@@ -2718,17 +2724,21 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   mounted: function mounted() {
+    var _this = this;
+
     var userId = 1;
-    Echo["private"]('App.Models.User.' + userId).notification(function (notification) {
+    Echo["private"]('users.notifications.' + userId).notification(function (notification) {
+      _this.$notify(notification.title + '\n' + notification.message);
+
       console.log(notification);
     }); // this.loadNotifications()
   },
   methods: {
     loadNotifications: function loadNotifications() {
-      var _this = this;
+      var _this2 = this;
 
       this.axios.get('/user/info').then(function (response) {
-        _this.user = response.data.data;
+        _this2.user = response.data.data;
       });
     }
   }
@@ -35227,20 +35237,9 @@ var render = function() {
       _vm._v(_vm._s(_vm.message))
     ]),
     _vm._v(" "),
-    _c("div", { staticClass: "card" }, [
-      _c("div", { staticClass: "card-header" }, [_vm._v("List of Files")]),
-      _vm._v(" "),
-      _c(
-        "ul",
-        { staticClass: "list-group list-group-flush" },
-        _vm._l(_vm.fileInfos, function(file, index) {
-          return _c("li", { key: index, staticClass: "list-group-item" }, [
-            _c("a", { attrs: { href: file.url } }, [_vm._v(_vm._s(file.name))])
-          ])
-        }),
-        0
-      )
-    ])
+     false
+      ? 0
+      : _vm._e()
   ])
 }
 var staticRenderFns = []

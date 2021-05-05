@@ -24,7 +24,7 @@
 
     <div class="alert alert-light" role="alert">{{ message }}</div>
 
-    <div class="card">
+    <div class="card" v-if="false">
       <div class="card-header">List of Files</div>
       <ul class="list-group list-group-flush">
         <li
