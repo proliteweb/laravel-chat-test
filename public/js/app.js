@@ -2041,11 +2041,13 @@ __webpack_require__.r(__webpack_exports__);
       activeUsers: []
     };
   },
+  beforeRouteLeave: function beforeRouteLeave(to, from, next) {
+    window.Echo.leave("chats.".concat(this.id));
+    next();
+  },
   mounted: function mounted() {
     var _this = this;
 
-    // this.hasFiles = this.$store.state.ChatUploadFiles.hasFiles;
-    // this.$store.state.ChatUploadFiles.commit('setHasFiles',true)
     window.Echo.join("chats.".concat(this.id)).here(function (users) {
       _this.activeUsers = users;
     }).joining(function (user) {
@@ -2255,6 +2257,10 @@ __webpack_require__.r(__webpack_exports__);
       chats: null
     };
   },
+  beforeRouteLeave: function beforeRouteLeave(to, from, next) {
+    window.Echo.leave("chats.user.1");
+    next();
+  },
   mounted: function mounted() {
     var _this = this;
 
@@ -2263,7 +2269,7 @@ __webpack_require__.r(__webpack_exports__);
 
     if (!_class_ChatRoomsInitialized__WEBPACK_IMPORTED_MODULE_1__.default.hasSubscribedRoom(room)) {
       _class_ChatRoomsInitialized__WEBPACK_IMPORTED_MODULE_1__.default.addSubscribedRoom(room);
-      window.Echo["private"](room).listen('.MessageSubmitted', function (_ref) {
+      window.Echo.join(room).listen('.MessageSubmitted', function (_ref) {
         var message = _ref.message;
 
         _this.replaceLastMessage(message);
@@ -2716,11 +2722,17 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: 'user-notifications',
   data: function data() {
     return {
-      user: null
+      user: null,
+      notifications: []
     };
   },
   mounted: function mounted() {
@@ -2728,7 +2740,7 @@ __webpack_require__.r(__webpack_exports__);
 
     var userId = 1;
     Echo["private"]('users.notifications.' + userId).notification(function (notification) {
-      console.log(notification);
+      _this.notifications.push(notification);
 
       _this.$notify(notification.data.title + '<br>' + notification.data.message);
     });
@@ -5792,7 +5804,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.not_selected[data-v-7beb4552] {\r\n  opacity: .6;\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.not_selected[data-v-7beb4552] {\n  opacity: .6;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -35476,20 +35488,9 @@ var render = function() {
       _vm._v(_vm._s(_vm.message))
     ]),
     _vm._v(" "),
-    _c("div", { staticClass: "card" }, [
-      _c("div", { staticClass: "card-header" }, [_vm._v("List of Files")]),
-      _vm._v(" "),
-      _c(
-        "ul",
-        { staticClass: "list-group list-group-flush" },
-        _vm._l(_vm.fileInfos, function(file, index) {
-          return _c("li", { key: index, staticClass: "list-group-item" }, [
-            _c("a", { attrs: { href: file.url } }, [_vm._v(_vm._s(file.name))])
-          ])
-        }),
-        0
-      )
-    ])
+     false
+      ? 0
+      : _vm._e()
   ])
 }
 var staticRenderFns = []
@@ -35583,7 +35584,19 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("h1", [_vm._v("Notification")])
+  return _c(
+    "ul",
+    _vm._l(_vm.notifications, function(notification) {
+      return _vm.notifications
+        ? _c("li", [
+            _c("b", [_vm._v(_vm._s(notification.data.title))]),
+            _vm._v(" "),
+            _c("span", [_vm._v(_vm._s(notification.data.message))])
+          ])
+        : _vm._e()
+    }),
+    0
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
