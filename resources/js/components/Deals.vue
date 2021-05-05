@@ -5,10 +5,13 @@
     </div>
     <div class="row">
       <div class="col-sm-12 mt-4" v-for="deal in deals">
-        <router-link :to="`/deals/${deal.slug}`">
-          <img :src="deal.customer.profile.avatar" :width="80" alt="">
-          {{ deal.title }}
-        </router-link>
+        <div class="deal" :class="deal.is_closed ? 'is_closed' : ''">
+            <router-link :to="`/deals/${deal.slug}`">
+                <img :src="deal.customer.profile.avatar" :width="80" alt="">
+                {{ deal.title }}
+            </router-link>
+        </div>
+          <hr>
       </div>
     </div>
   </div>
@@ -37,3 +40,11 @@ export default {
   methods: {}
 }
 </script>
+
+<style lang="scss">
+    .deal{
+        &.is_closed{
+            opacity: .4;
+        }
+    }
+</style>

@@ -14,18 +14,18 @@ export default {
 
   mounted() {
     const userId = 1;
-    Echo.private('users.notifications.' + userId)
-        .notification((notification) => {
-          this.$notify(notification.title + '\n' + notification.message)
-          console.log(notification);
-        });
+      Echo.private('users.notifications.' + userId)
+          .notification((notification) => {
+              console.log(notification);
+              this.$notify(notification.data.title + '<br>' + notification.data.message)
+          });
 
-    // this.loadNotifications()
+    this.loadNotifications()
   },
 
   methods: {
     loadNotifications(){
-      this.axios.get('/user/info').then((response) => {
+      this.axios.get('/user/notifications/unread').then((response) => {
         this.user = response.data.data
       })
     }

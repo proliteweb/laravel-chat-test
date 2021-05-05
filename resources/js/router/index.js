@@ -6,6 +6,7 @@ import Chats from '../components/Chats'
 import Deal from '../components/Deal'
 import Deals from '../components/Deals'
 import MyDeals from '../components/MyDeals'
+import NotificationConfig from '../components/cabinet/NotificationConfig'
 
 Vue.use(Router)
 
@@ -30,6 +31,11 @@ const router = new Router({
         {
             path: '/deals/:slug',
             component: Deal,
+            props: true,
+        },
+        {
+            path: '/cabinet/notifications/config',
+            component: NotificationConfig,
             props: true,
         }
     ],
