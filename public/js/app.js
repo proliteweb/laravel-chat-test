@@ -2390,7 +2390,7 @@ __webpack_require__.r(__webpack_exports__);
       var data = _ref.data;
       _this.deal = data.data;
       _this.bets = data.bids;
-      window.Echo["private"]("deals.".concat(_this.deal.id, ".new-bid")).listen('.BidCreated', function (_ref2) {
+      window.Echo.join("deals.".concat(_this.deal.id, ".new-bid")).listen('.BidCreated', function (_ref2) {
         var bid = _ref2.bid;
 
         _this.bets.push(bid);

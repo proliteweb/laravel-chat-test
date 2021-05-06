@@ -70,7 +70,7 @@ export default {
     this.axios.get('/deals/' + this.id).then(({data}) => {
       this.deal = data.data;
       this.bets = data.bids;
-      window.Echo.private(`deals.${this.deal.id}.new-bid`)
+      window.Echo.join(`deals.${this.deal.id}.new-bid`)
           .listen('.BidCreated', ({bid}) => {
             this.bets.push(bid);
           })
